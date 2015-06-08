@@ -23,8 +23,13 @@ def main():
             # Count crops in radius
             count = 0
 
-            for ry in range(y-radius, y+radius):
-                for rx in range(x-radius, x+radius):
+            for ry in range(y-radius, y):
+                for rx in range(x-((ry-y)+radius), x+((ry-y)+radius)):
+                    if (inputList[ry][rx] == 'x') and not((ry == y) and (rx == x)):
+                        count += 1
+
+            for ry in range(y, y+radius):
+                for rx in range(x-((y-ry)+radius), x+((y-ry)+radius)):
                     if (inputList[ry][rx] == 'x') and not((ry == y) and (rx == x)):
                         count += 1
 
@@ -33,7 +38,7 @@ def main():
                 maxx = x
                 maxy = y
 
-    print('Maximized Position: (' + str(maxx+1) + ', ' + str(maxy) + ")")
+    print('Maximized Position: (' + str(maxx+1) + ', ' + str(maxy) + ")\n" + "Crops in radius: " + str(maxcount))
 
 
 
