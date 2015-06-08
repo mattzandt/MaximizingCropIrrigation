@@ -23,24 +23,43 @@ def main():
             # Count crops in radius
             count = 0
 
-            for ry in range(y-radius, y):
-                for rx in range(x-((ry-y)+radius), x+((ry-y)+radius)):
-                    if (inputList[ry][rx] == 'x') and not((ry == y) and (rx == x)):
+            for ry in range(y-radius, y+radius):
+                for rx in range(x-radius, x+radius):
+                    # Count crops that are within radius and are not the center
+                    if ((ry-y)**2+(rx-x)**2) <= radius**2 and (inputList[ry][rx] == 'x') and not((ry == y) and (rx == x)):
                         count += 1
 
-            for ry in range(y, y+radius):
-                for rx in range(x-((y-ry)+radius), x+((y-ry)+radius)):
-                    if (inputList[ry][rx] == 'x') and not((ry == y) and (rx == x)):
-                        count += 1
-
+            # Check is location is a contender for max
             if count > maxcount:
                 maxcount = count
                 maxx = x
                 maxy = y
 
-    print('Maximized Position: (' + str(maxx+1) + ', ' + str(maxy) + ")\n" + "Crops in radius: " + str(maxcount))
+    # Display results
+    print('Maximized Position: (' + str(maxx) + ', ' + str(maxy-1) + ")\n" + "Crops in radius: " + str(maxcount))
 
+    # Create a visual representation of the crops irrigated
+    for ry in range(maxy-radius, maxy+radius):
+                temp = list(inputList[ry])
+                for rx in range(maxx-radius, maxx+radius):
+                    # Check for center
+                    if ry == maxy and rx == maxx:
+                        temp[rx] = 'o'
+                        inputList[ry] = ''.join(temp)
+                    # Check if location is within radius
+                    elif ((ry-maxy)**2+(rx-maxx)**2) <= radius**2:
+                        # Check if crop...
+                        if inputList[ry][rx] == 'x':
+                            temp[rx] = '@'
+                            inputList[ry] = ''.join(temp)
+                        # ... or else it must be empty
+                        else:
+                            temp[rx] = ' '
+                            inputList[ry] = ''.join(temp)
 
+    # Output map with visual representation
+    for i in range(1, rows):
+        print(inputList[i])
 
 if __name__ == '__main__':
     main()
