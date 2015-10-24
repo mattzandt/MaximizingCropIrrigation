@@ -4,7 +4,7 @@ def main():
     file = open('input.txt')
     inputList = file.read().splitlines()
     file.close()
-    # test commit
+    
     # Store information
     values = inputList[0].split()=
     rows = int(values[0])
